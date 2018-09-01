@@ -3,21 +3,21 @@
     <el-row id="item-row">
       <el-col class="item-col" :span="4" v-for="item in items">
         <el-card>
-          <img src="../assets/dida_fish.png"></img>
-          <el-button type="text"> 继续搭配 </el-button>
+          <img v-bind:src="item.image"></img>
+          <el-button type="text" v-on:click="selectItem(item.id)"> 继续搭配 </el-button>
         </el-card>
       </el-col>
     </el-row>
     <div>
       <el-select v-model="type">
         <el-option value="0" label="上衣"></el-option>
-        <el-option value="1" label="裤子"></el-option>
-        <el-option value="2" label="鞋"></el-option>
-        <el-option value="3" label="裙子"></el-option>
-        <el-option value="4" label="帽子"></el-option>
-        <el-option value="5" label="包"></el-option>
+        <el-option value="1" label="下衣"></el-option>
+        <el-option value="2" label="裙装"></el-option>
+        <el-option value="3" label="女鞋"></el-option>
+        <el-option value="4" label="箱包"></el-option>
+        <el-option value="5" label="饰品"></el-option>
       </el-select>
-      <el-button id="refresh" type="primary" icon="el-icon-refresh"> 换一批 </el-button>
+      <el-button id="refresh" type="primary" icon="el-icon-refresh" v-on:click="reload()"> 换一批 </el-button>
     </div>
   </div>
 </template>
@@ -32,7 +32,14 @@ export default {
   },
   methods: {
     reload: function() {
-      this.items = [1, 2, 3, 4, 5, 6]
+      this.$http.get('http://localhost:5000/items?type=' + this.type).then((response) => {
+        this.items = response.data
+      })
+    },
+    selectItem: function(id) {
+      this.$http.get('http://localhost:5000/collocation?itemId=' + id).then((response) => {
+        this.$emit('collocation', response.data)
+      })
     }
   },
   mounted: function() {
@@ -49,8 +56,10 @@ export default {
   margin-left: 10px;
 }
 .el-card img {
+  margin: auto;
+  display: block;
   width: 100%;
-  min-height: 150px;
+  height: 150px;
 }
 #refresh {
   margin-left: 10px;

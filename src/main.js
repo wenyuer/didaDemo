@@ -1,7 +1,9 @@
 import Vue from 'vue'
+import VueResource from 'vue-resource'
 import App from './App.vue'
 import './plugins/element.js'
 
+Vue.use(VueResource)
 Vue.config.productionTip = false
 
 new Vue({
