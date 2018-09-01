@@ -17,19 +17,22 @@
     <div v-else-if="currentStep==1">
       <div class="guide"> 为搭配好的内容选择合适的位置 </div>
       <el-card style="width: fit-content; margin: auto;">
-        <item-placer v-bind:collocation="collocation" style="width: 512px; height: 512px; position: relative;" ></item-placer>
+        <item-placer v-bind:collocation="collocation" v-on:change="onPositionChange" style="width: 512px; height: 512px; position: relative;" ></item-placer>
       </el-card>
       <div class="rightbottom">
         <el-button v-on:click="reload">上一步</el-button>
-        <el-button type="primary" v-on:click="currentStep=2">下一步</el-button>
+        <el-button type="primary" v-on:click="submitPosition">下一步</el-button>
       </div>
     </div>
     <div v-else>
       <div class="guide"> 满意的话，就打印结果吧！ </div>
+      <el-card style="width: fit-content; margin: auto;">
+        <img id="finalImage" :src="finalImage" style="width: 512px; height: 512px; position: relative;" ></img>
+      </el-card>
       <div class="rightbottom">
         <el-button v-on:click="reload">重置</el-button>
         <el-button v-on:click="currentStep=1">上一步</el-button>
-        <el-button type="primary">打印</el-button>
+        <el-button v-on:click="print" type="primary">打印</el-button>
       </div>
     </div>
   </div>
@@ -49,7 +52,8 @@ export default {
     return {
       currentStep: 0,
       taobaoId: '',
-      collocation: []
+      collocation: [],
+      finalImage: ''
     }
   },
   methods: {
@@ -59,14 +63,29 @@ export default {
       })
     },
     onCollocationReceived: function(data) {
-      console.log(data)
       this.collocation = data
       this.currentStep = 1
+    },
+    onPositionChange: function(index, rect) {
+      this.collocation[index].x = rect.left
+      this.collocation[index].y = rect.top
+      this.collocation[index].w = rect.width
+      this.collocation[index].h = rect.height
+    },
+    submitPosition: function() {
+      this.$http.post('http://localhost:5000/position', this.collocation).then((response) => {
+        this.finalImage = response.data
+        this.currentStep = 2
+      })
     },
     reload: function() {
       this.currentStep = 0
       this.collocation = []
       this.taobaoId = ''
+      this.finalImage = ''
+    },
+    print: function() {
+      window.print()
     }
   }
 }

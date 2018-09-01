@@ -56,4 +56,5 @@ def getCollocation():
 
 @app.route("/position", methods=['POST'])
 def submitPosition():
-    return ''
+    print request.get_json()
+    return 'https://cn.vuejs.org/images/logo.png'

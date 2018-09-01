@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #item-row {
   margin-bottom: 10px;
 }
