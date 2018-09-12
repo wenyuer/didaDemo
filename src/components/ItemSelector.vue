@@ -3,7 +3,9 @@
     <el-row id="item-row">
       <el-col class="item-col" :span="4" v-for="item in items">
         <el-card>
-          <img v-bind:src="item.image"></img>
+          <div class="image-wrapper">
+            <img v-bind:src="item.image"></img>
+          </div>
           <el-button type="text" v-on:click="selectItem(item.id)"> 继续搭配 </el-button>
         </el-card>
       </el-col>
@@ -55,11 +57,17 @@ export default {
 .el-col:nth-child(n+2) .el-card {
   margin-left: 10px;
 }
+.el-card .image-wrapper {
+  height: 150px;
+  line-height: 150px;
+}
 .el-card img {
   margin: auto;
   display: block;
-  width: 100%;
-  height: 150px;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 150px;
 }
 #refresh {
   margin-left: 10px;
