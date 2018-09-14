@@ -1,23 +1,18 @@
 <template>
   <div>
     <el-row id="item-row">
-      <el-col class="item-col" :span="4" v-for="item in items">
+      <el-col class="item-col" :span="4" :key="item.itemId" v-for="item in items">
         <el-card>
           <div class="image-wrapper">
-            <img v-bind:src="item.image"/>
+            <img v-bind:src="item.picUrl"/>
           </div>
-          <el-button type="text" v-on:click="selectItem(item.id)"> 继续搭配 </el-button>
+          <el-button type="text" v-on:click="selectItem(item.itemId)"> 继续搭配 </el-button>
         </el-card>
       </el-col>
     </el-row>
     <div>
       <el-select v-model="type">
-        <el-option value="0" label="上衣"></el-option>
-        <el-option value="1" label="下衣"></el-option>
-        <el-option value="2" label="裙装"></el-option>
-        <el-option value="3" label="女鞋"></el-option>
-        <el-option value="4" label="箱包"></el-option>
-        <el-option value="5" label="饰品"></el-option>
+        <el-option v-for="(v, k) in typeMeta" :key="v" :value="k" :label="v"></el-option>
       </el-select>
       <el-button id="refresh" type="primary" icon="el-icon-refresh" v-on:click="reload()"> 换一批 </el-button>
     </div>
@@ -28,6 +23,7 @@
 import http from '../plugins/axios.js'
 
 export default {
+  props: ['typeMeta'],
   data() {
     return {
       items: [],
@@ -36,13 +32,15 @@ export default {
   },
   methods: {
     reload: function() {
-      http.get('http://localhost:5000/items?type=' + this.type, (response) => {
-        this.items = response.data
+      http.get('loadsource.do?activityId=34455&pageSize=6&frontCateId=' + this.type, (response) => {
+        if (response.success)
+          this.items = response.data
       })
     },
     selectItem: function(id) {
-      http.get('http://localhost:5000/collocation?itemId=' + id, (response) => {
-        this.$emit('collocation', response.data)
+      http.get('merge.do?positionId=189856&triggers=' + id, (response) => {
+        if (response.success)
+          this.$emit('collocation', response)
       })
     }
   },

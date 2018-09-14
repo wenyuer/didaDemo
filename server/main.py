@@ -70,3 +70,9 @@ def allFrontCate():
 def loadSource():
     with open("2.json") as f:
         return json.dumps(json.load(f))
+
+
+@app.route("/dida/merge.do")
+def merge():
+    with open("3.json") as f:
+        return json.dumps(json.load(f))

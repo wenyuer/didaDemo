@@ -10,7 +10,7 @@ export default {
       method: 'GET',
       url: url
     }).then(response => {
-      callback(response)
+      callback(response.data)
     })
   }
 }

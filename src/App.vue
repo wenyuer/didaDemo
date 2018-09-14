@@ -12,12 +12,12 @@
         <el-button type="primary" v-on:click="taobaoIdCollocate"> 获取搭配 </el-button>
       </div>
       <div class="guide"> 或者，从下列商品中选择一个进行搭配</div>
-      <item-selector style="margin: 0 50px 0 50px;" v-on:collocation="onCollocationReceived"></item-selector>
+      <item-selector style="margin: 0 50px 0 50px;" :type-meta="typeMeta" v-on:collocation="onCollocationReceived"></item-selector>
     </div>
     <div v-else-if="currentStep==1">
       <div class="guide"> 为搭配好的内容选择合适的位置 </div>
       <el-card style="width: fit-content; margin: auto;">
-        <item-placer v-bind:collocation="collocation" v-on:change="onPositionChange" style="width: 512px; height: 512px; position: relative;" ></item-placer>
+        <item-placer v-bind:collocation="collocation" v-on:change="onPositionChange" style="width: 600px; height: 600px; position: relative;" ></item-placer>
       </el-card>
       <div class="rightbottom">
         <el-button v-on:click="reload">上一步</el-button>
@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       currentStep: 0,
+      typeMeta: {},
       taobaoId: '',
       collocation: [],
       finalImage: ''
@@ -59,19 +60,20 @@ export default {
   },
   methods: {
     taobaoIdCollocate: function() {
-      http.get('http://localhost:5000/collocation?taobaoId=' + this.taobaoId, (response) => {
-        this.onCollocationReceived(response.data)
+      http.get('merge.do?positionId=189856&usernick=' + this.taobaoId, (response) => {
+        if (response.success)
+          this.onCollocationReceived(response.data)
       })
     },
     onCollocationReceived: function(data) {
-      this.collocation = data
+      this.collocation = eval('(' + data.data.rawdata + ')')
       this.currentStep = 1
     },
     onPositionChange: function(index, rect) {
-      this.collocation[index].x = rect.left
-      this.collocation[index].y = rect.top
-      this.collocation[index].w = rect.width
-      this.collocation[index].h = rect.height
+      this.collocation.layers[index].x = rect.left * 2
+      this.collocation.layers[index].y = rect.top * 2
+      this.collocation.layers[index].width = rect.width * 2
+      this.collocation.layers[index].height = rect.height * 2
     },
     submitPosition: function() {
       http.post('http://localhost:5000/position', this.collocation, (response) => {
@@ -88,6 +90,12 @@ export default {
     print: function() {
       window.print()
     }
+  },
+  mounted() {
+    http.get('allfrontcate.do', (response) => {
+      if (response.success)
+        this.typeMeta = response.data
+    })
   }
 }
 </script>
@@ -96,7 +104,7 @@ export default {
 .guide {
   font-size: 18px;
   text-align: center;
-  margin: 50px 0 50px 0;
+  margin: 30px 0 30px 0;
 }
 .rightbottom {
   position: absolute;
