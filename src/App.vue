@@ -27,7 +27,7 @@
     <div v-else>
       <div class="guide"> 满意的话，就打印结果吧！ </div>
       <el-card style="width: fit-content; margin: auto;">
-        <img id="finalImage" :src="finalImage" style="width: 512px; height: 512px; position: relative;" ></img>
+        <img id="finalImage" :src="finalImage" style="width: 512px; height: 512px; position: relative;"/>
       </el-card>
       <div class="rightbottom">
         <el-button v-on:click="reload">重置</el-button>
@@ -41,6 +41,7 @@
 <script>
 import ItemSelector from './components/ItemSelector'
 import ItemPlacer from './components/ItemPlacer'
+import http from './plugins/axios.js'
 
 export default {
   name: 'app',
@@ -58,7 +59,7 @@ export default {
   },
   methods: {
     taobaoIdCollocate: function() {
-      this.$http.get('http://localhost:5000/collocation?taobaoId=' + this.taobaoId).then((response) => {
+      http.get('http://localhost:5000/collocation?taobaoId=' + this.taobaoId, (response) => {
         this.onCollocationReceived(response.data)
       })
     },
@@ -73,7 +74,7 @@ export default {
       this.collocation[index].h = rect.height
     },
     submitPosition: function() {
-      this.$http.post('http://localhost:5000/position', this.collocation).then((response) => {
+      http.post('http://localhost:5000/position', this.collocation, (response) => {
         this.finalImage = response.data
         this.currentStep = 2
       })

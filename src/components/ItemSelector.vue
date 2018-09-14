@@ -4,7 +4,7 @@
       <el-col class="item-col" :span="4" v-for="item in items">
         <el-card>
           <div class="image-wrapper">
-            <img v-bind:src="item.image"></img>
+            <img v-bind:src="item.image"/>
           </div>
           <el-button type="text" v-on:click="selectItem(item.id)"> 继续搭配 </el-button>
         </el-card>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import http from '../plugins/axios.js'
+
 export default {
   data() {
     return {
@@ -34,12 +36,12 @@ export default {
   },
   methods: {
     reload: function() {
-      this.$http.get('http://localhost:5000/items?type=' + this.type).then((response) => {
+      http.get('http://localhost:5000/items?type=' + this.type, (response) => {
         this.items = response.data
       })
     },
     selectItem: function(id) {
-      this.$http.get('http://localhost:5000/collocation?itemId=' + id).then((response) => {
+      http.get('http://localhost:5000/collocation?itemId=' + id, (response) => {
         this.$emit('collocation', response.data)
       })
     }

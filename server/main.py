@@ -58,3 +58,15 @@ def getCollocation():
 def submitPosition():
     print request.get_json()
     return 'https://cn.vuejs.org/images/logo.png'
+
+
+@app.route("/dida/allfrontcate.do")
+def allFrontCate():
+    with open("1.json") as f:
+        return json.dumps(json.load(f))
+
+
+@app.route("/dida/loadsource.do")
+def loadSource():
+    with open("2.json") as f:
+        return json.dumps(json.load(f))
