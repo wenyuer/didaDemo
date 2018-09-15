@@ -5,7 +5,7 @@
       <el-step title="调整位置"></el-step>
       <el-step title="打印结果"></el-step>
     </el-steps>
-    <div v-loading="loading" element-loading-text="滴答正在为您服务..." element-loading-background="rgba(255, 255, 255, 0.9)">
+    <div v-loading="loading" element-loading-text="滴搭正在为您服务..." element-loading-background="rgba(255, 255, 255, 0.9)">
       <div v-if="currentStep==0">
         <div class="guide"> 请输入淘宝昵称 </div>
         <div style="text-align: center;">
@@ -52,7 +52,12 @@ export default {
     ItemPlacer
   },
   data() {
+    var positionId = 189856
+    for(var pair of window.location.search.substr(1).split('&'))
+      if (pair.split('=')[0] == 'positionId')
+        positionId = pair.split('=')[1]
     return {
+      positionId: positionId,
       currentStep: 0,
       loading: false,
       typeMeta: {},
@@ -63,10 +68,10 @@ export default {
   },
   methods: {
     taobaoIdCollocate: function() {
-      this.collocate('merge.do?positionId=189856&usernick=' + this.taobaoId)
+      this.collocate('merge.do?positionId=' + this.positionId + '&usernick=' + this.taobaoId)
     },
     itemCollocate: function(id) {
-      this.collocate('merge.do?positionId=189856&triggers=' + id)
+      this.collocate('merge.do?positionId=' + this.positionId + '&triggers=' + id)
     },
     collocate: function(url) {
       this.loading = true
@@ -86,7 +91,9 @@ export default {
     },
     submitPosition: function() {
       this.loading = true
-      http.post('mergebyrawdata.do', this.collocation, (response) => {
+      /* eslint-disable-next-line no-console */
+      console.log(JSON.stringify(this.collocation).replace('"', '&quot;'))
+      http.get('mergebyrawdata.do?rawdata=' + encodeURIComponent(JSON.stringify(this.collocation)), (response) => {
         this.loading = false
         if (response.success) {
           this.finalImage = response.data.resultUrl

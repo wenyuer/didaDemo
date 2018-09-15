@@ -19,14 +19,15 @@ def loadSource():
 
 @app.route("/dida/merge.do")
 def merge():
-    time.sleep(5)
+    time.sleep(1)
     with open("3.json") as f:
         return json.dumps(json.load(f))
 
 
-@app.route("/dida/mergebyrawdata.do", methods=['POST'])
+@app.route("/dida/mergebyrawdata.do")
 def mergeByRawData():
-    time.sleep(5)
+    print request.args['rawdata']
+    time.sleep(1)
     print request.get_json()
     with open("3.json") as f:
         return json.dumps(json.load(f))
