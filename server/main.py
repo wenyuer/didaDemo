@@ -76,3 +76,10 @@ def loadSource():
 def merge():
     with open("3.json") as f:
         return json.dumps(json.load(f))
+
+
+@app.route("/dida/mergebyrawdata.do", methods=['POST'])
+def mergeByRawData():
+    print request.get_json()
+    with open("3.json") as f:
+        return json.dumps(json.load(f))

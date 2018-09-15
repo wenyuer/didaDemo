@@ -12,5 +12,14 @@ export default {
     }).then(response => {
       callback(response.data)
     })
+  },
+  post: (url, data, callback) => {
+    service.request({
+      method: 'POST',
+      url: url,
+      data: data
+    }).then(response => {
+      callback(response.data)
+    })
   }
 }

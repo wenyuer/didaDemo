@@ -40,7 +40,7 @@ export default {
     selectItem: function(id) {
       http.get('merge.do?positionId=189856&triggers=' + id, (response) => {
         if (response.success)
-          this.$emit('collocation', response)
+          this.$emit('collocation', response.data)
       })
     }
   },

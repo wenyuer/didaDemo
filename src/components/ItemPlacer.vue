@@ -1,9 +1,7 @@
 <template>
   <div>
-    <vue-drag-resize v-for="(item, index) in collocation.layers"
-      :x="item.x / 2" :y="item.y / 2" :w="item.width / 2" :h="item.height / 2"
-      :isActive="item.dynamic" :isDraggable="item.dynamic" :isResizable="item.dynamic" :parentLimitation="true" @resizestop="(rect) => onChange(index, rect)" @dragstop="(rect) => onChange(index, rect)">
-      <img v-bind:src="item.picUrl"></img>
+    <vue-drag-resize v-for="(item, index) in collocation.layers" :key="item.picUrl" :x="item.x/2" :y="item.y/2" :w="item.width/2" :h="item.height/2" :isActive="item.dynamic" :isDraggable="item.dynamic" :isResizable="item.dynamic" @resizestop="(rect) => onChange(index, rect)" @dragstop="(rect) => onChange(index, rect)">
+      <img v-bind:src="item.picUrl"/>
     </vue-drag-resize>
   </div>
 </template>

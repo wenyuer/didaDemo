@@ -6,9 +6,9 @@
       <el-step title="打印结果"></el-step>
     </el-steps>
     <div v-if="currentStep==0">
-      <div class="guide"> 输入淘宝id获得个性化的推荐和搭配 </div>
+      <div class="guide"> 输入淘宝昵称获得个性化的推荐和搭配 </div>
       <div style="text-align: center;">
-        <el-input style="width: 200px; margin-right: 10px;" v-model="taobaoId" placeholder="输入淘宝id"></el-input>
+        <el-input style="width: 200px; margin-right: 10px;" v-model="taobaoId" placeholder="输入淘宝昵称"></el-input>
         <el-button type="primary" v-on:click="taobaoIdCollocate"> 获取搭配 </el-button>
       </div>
       <div class="guide"> 或者，从下列商品中选择一个进行搭配</div>
@@ -27,7 +27,7 @@
     <div v-else>
       <div class="guide"> 满意的话，就打印结果吧！ </div>
       <el-card style="width: fit-content; margin: auto;">
-        <img id="finalImage" :src="finalImage" style="width: 512px; height: 512px; position: relative;"/>
+        <img id="finalImage" :src="finalImage" style="width: 600px; height: 600px; position: relative;"/>
       </el-card>
       <div class="rightbottom">
         <el-button v-on:click="reload">重置</el-button>
@@ -66,7 +66,7 @@ export default {
       })
     },
     onCollocationReceived: function(data) {
-      this.collocation = eval('(' + data.data.rawdata + ')')
+      this.collocation = eval('(' + data.rawdata + ')')
       this.currentStep = 1
     },
     onPositionChange: function(index, rect) {
@@ -76,9 +76,11 @@ export default {
       this.collocation.layers[index].height = rect.height * 2
     },
     submitPosition: function() {
-      http.post('http://localhost:5000/position', this.collocation, (response) => {
-        this.finalImage = response.data
-        this.currentStep = 2
+      http.post('mergebyrawdata.do', this.collocation, (response) => {
+        if (response.success) {
+          this.finalImage = response.data.resultUrl
+          this.currentStep = 2
+        }
       })
     },
     reload: function() {
@@ -88,7 +90,11 @@ export default {
       this.finalImage = ''
     },
     print: function() {
-      window.print()
+      // window.print()
+      var popup = window.open()
+      popup.document.write('<img src="' + this.finalImage + '" style="width: 100%;"/>')
+      popup.focus()
+      popup.print()
     }
   },
   mounted() {
