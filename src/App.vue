@@ -80,7 +80,8 @@ export default {
         if (response.success) {
           this.collocation = eval('(' + response.data.rawdata.replace(new RegExp(/(&quot;)/g), '"') + ')')
           this.currentStep = 1
-        }
+        } else
+          this.$message.error(response.errorMsg)
       })
     },
     onPositionChange: function(index, rect) {
@@ -93,12 +94,13 @@ export default {
       this.loading = true
       /* eslint-disable-next-line no-console */
       console.log(JSON.stringify(this.collocation).replace('"', '&quot;'))
-      http.get('mergebyrawdata.do?rawdata=' + encodeURIComponent(JSON.stringify(this.collocation)), (response) => {
+      http.post('mergebyrawdata.do', JSON.stringify(this.collocation), (response) => {
         this.loading = false
         if (response.success) {
           this.finalImage = response.data
           this.currentStep = 2
-        }
+        } else
+          this.$message.error(response.errorMsg)
       })
     },
     reload: function() {
@@ -119,6 +121,8 @@ export default {
     http.get('allfrontcate.do?positionId=' + this.positionId, (response) => {
       if (response.success)
         this.typeMeta = response.data
+      else
+       this.$message.error(response.errorMsg)
     })
   }
 }

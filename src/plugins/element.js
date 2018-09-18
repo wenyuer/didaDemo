@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueDragResize from 'vue-drag-resize'
-import { Loading } from 'element-ui'
+import { Loading, Message } from 'element-ui'
 import { Row, Col, Card } from 'element-ui'
 import { Input, Button, Select, Option } from 'element-ui'
 import { Steps, Step } from 'element-ui'
@@ -19,3 +19,4 @@ Vue.use(Loading.directive)
 Vue.component('vue-drag-resize', VueDragResize)
 
 Vue.prototype.$loading = Loading.service
+Vue.prototype.$message = Message
