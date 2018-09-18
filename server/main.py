@@ -29,5 +29,5 @@ def mergeByRawData():
     print request.args['rawdata']
     time.sleep(1)
     print request.get_json()
-    with open("3.json") as f:
+    with open("4.json") as f:
         return json.dumps(json.load(f))

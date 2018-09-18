@@ -13,7 +13,7 @@
           <el-button type="primary" v-on:click="taobaoIdCollocate"> 获取搭配 </el-button>
         </div>
         <div class="guide"> 或者，从下列商品中选择一个进行搭配</div>
-        <item-selector style="margin: 0 50px 0 50px;" :type-meta="typeMeta" v-on:item-selected="itemCollocate"></item-selector>
+        <item-selector style="margin: 0 50px 0 50px;" :type-meta="typeMeta" :position-id="positionId" v-on:item-selected="itemCollocate"></item-selector>
       </div>
       <div v-else-if="currentStep==1">
         <div class="guide"> 为搭配好的内容选择合适的位置 </div>
@@ -96,7 +96,7 @@ export default {
       http.get('mergebyrawdata.do?rawdata=' + encodeURIComponent(JSON.stringify(this.collocation)), (response) => {
         this.loading = false
         if (response.success) {
-          this.finalImage = response.data.resultUrl
+          this.finalImage = response.data
           this.currentStep = 2
         }
       })
@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted() {
-    http.get('allfrontcate.do', (response) => {
+    http.get('allfrontcate.do?positionId=' + this.positionId, (response) => {
       if (response.success)
         this.typeMeta = response.data
     })

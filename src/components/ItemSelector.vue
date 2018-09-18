@@ -23,7 +23,7 @@
 import http from '../plugins/axios.js'
 
 export default {
-  props: ['typeMeta'],
+  props: ['typeMeta', 'positionId'],
   data() {
     return {
       items: [],
@@ -32,17 +32,13 @@ export default {
   },
   methods: {
     reload: function() {
-      http.get('loadsource.do?activityId=34455&pageSize=6&frontCateId=' + this.type, (response) => {
+      http.get('loadsource.do?activityId=34455&pageSize=6&frontCateId=' + this.type + '&positionId=' + this.positionId, (response) => {
         if (response.success)
           this.items = response.data
       })
     },
     selectItem: function(id) {
       this.$emit('item-selected', id)
-      // http.get('merge.do?positionId=189856&triggers=' + id, (response) => {
-      //   if (response.success)
-      //     this.$emit('collocation', response.data)
-      // })
     }
   },
   mounted: function() {
