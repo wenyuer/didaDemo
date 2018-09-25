@@ -36,6 +36,7 @@ def merge():
 
 @app.route("/dida/mergebyrawdata.do", methods=["POST"])
 def mergeByRawData():
+    print request.get_data()
     time.sleep(1)
     if random.random() <= 0.3:
         return json.dumps(error)

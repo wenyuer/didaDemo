@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       items: [],
-      type: "0"
+      type: Object.keys(this.typeMeta)[0]
     }
   },
   methods: {
