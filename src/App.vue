@@ -1,11 +1,12 @@
 <template>
   <div>
+    <img class="title-icon" :src="require('./assets/logo.png')"/>
     <el-steps :active="currentStep" simple>
       <el-step title="选择素材"></el-step>
       <el-step title="调整位置"></el-step>
       <el-step title="打印结果"></el-step>
     </el-steps>
-    <div v-loading="loading" element-loading-text="滴搭正在为您服务..." element-loading-background="rgba(255, 255, 255, 0.9)">
+    <div v-loading="loading" element-loading-spinner="custom-loading" element-loading-text="滴搭正在为您服务..." element-loading-background="rgba(255, 255, 255, 0.9)">
       <div v-if="currentStep==0">
         <div class="guide"> 请输入淘宝昵称 </div>
         <div style="text-align: center;">
@@ -52,7 +53,7 @@ export default {
     ItemPlacer
   },
   data() {
-    var positionId = 189856
+    var positionId = 197327
     for(var pair of window.location.search.substr(1).split('&'))
       if (pair.split('=')[0] == 'positionId')
         positionId = pair.split('=')[1]
@@ -71,6 +72,7 @@ export default {
       this.collocate('merge.do?positionId=' + this.positionId + '&usernick=' + this.taobaoId)
     },
     itemCollocate: function(id) {
+      this.taobaoId = ''
       this.collocate('merge.do?positionId=' + this.positionId + '&triggers=' + id)
     },
     collocate: function(url) {
@@ -110,7 +112,12 @@ export default {
     print: function() {
       // window.print()
       var popup = window.open()
-      popup.document.write('<img src="' + this.finalImage + '" style="width: 100%;"/>')
+      var date = new Date()
+      var content = '<img src="' + this.finalImage + '" style="width: 100%;"/>' +
+        '<div style="float: right; color: red; margin-top: 100px; font-size: 24px;">' + (this.taobaoId ? this.taobaoId : '某不知名') + '达人于' + date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日制作</div>' +
+        '<img src="' + require('./assets/logo.png') + '" style="float: right; width: 50px; height: 50px; margin-top: 92px; margin-right: 20px;"/>'
+
+      popup.document.write(content)
       popup.focus()
       popup.print()
     }
@@ -127,6 +134,9 @@ export default {
 </script>
 
 <style>
+.title-icon {
+  display: none;
+}
 .guide {
   font-size: 18px;
   text-align: center;
@@ -136,5 +146,20 @@ export default {
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+.custom-loading {
+  width: 150px;
+  height: 150px;
+  background: url('./assets/loading.gif');
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  display: inline-block;
+  text-align: center;
+}
+.el-loading-spinner {
+  top: 250px !important;
+}
+.el-loading-spinner .el-loading-text {
+  font-size: 20px !important;
 }
 </style>

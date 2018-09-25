@@ -27,8 +27,8 @@ def loadSource():
 
 @app.route("/dida/merge.do")
 def merge():
-    time.sleep(1)
-    if random.random() <= 0.3:
+    time.sleep(0.5)
+    if random.random() <= 0.05:
         return json.dumps(error)
     with open("3.json") as f:
         return json.dumps(json.load(f))
@@ -37,8 +37,8 @@ def merge():
 @app.route("/dida/mergebyrawdata.do", methods=["POST"])
 def mergeByRawData():
     print request.get_data()
-    time.sleep(1)
-    if random.random() <= 0.3:
+    time.sleep(0.5)
+    if random.random() <= 0.05:
         return json.dumps(error)
     with open("4.json") as f:
         return json.dumps(json.load(f))
