@@ -114,8 +114,8 @@ export default {
       var popup = window.open()
       var date = new Date()
       var content = '<img src="' + this.finalImage + '" style="width: 100%;"/>' +
-        '<div style="float: right; color: red; margin-top: 100px; font-size: 24px;">' + (this.taobaoId ? this.taobaoId : '某不知名') + '达人于' + date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日制作</div>' +
-        '<img src="' + require('./assets/logo.png') + '" style="float: right; width: 50px; height: 50px; margin-top: 92px; margin-right: 20px;"/>'
+        '<div style="float: right; color: #409EFF; margin-top: 100px; font-size: 24px;">' +  (this.taobaoId ? this.taobaoId : '不知名') + '达人于' + date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日制作</div>' +
+        '<img src="' + require('./assets/logo.png') + '" style="float: right; width: 60px; height: 50px; margin-top: 92px; margin-right: 20px;"/>'
 
       popup.document.write(content)
       popup.focus()
@@ -152,7 +152,7 @@ export default {
   height: 150px;
   background: url('./assets/loading.gif');
   background-repeat:no-repeat;
-  background-size:100% 100%;
+  background-size: 100% 100%;
   display: inline-block;
   text-align: center;
 }
